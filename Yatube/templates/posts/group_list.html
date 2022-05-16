@@ -1,19 +1,34 @@
-{% extends "base.html" %}
-{% block title %}{{ title }}{% endblock %}
-{% block content %}
-      <!-- класс py-5 создает отступы сверху и снизу блока -->
-      <div class="container py-5">
-        {% for post in posts %}
-          <ul>
-            <li>
-              Автор: {{ post.author.get_full_name }}
-            </li>
-            <li>
-              Дата публикации: {{ post.pub_date|date:"d E Y" }}
-            </li>
-          </ul>      
-          <p>{{ post.text }}</p>         
-        {% endfor %}
-          <!-- под последним постом нет линии -->
-      </div> 
-{% endblock %}   
+<!DOCTYPE html> <!-- Используется html 5 версии --> 
+{% extends 'base.html' %}
+{% load static %} 
+  <head> 
+  </head> 
+  <body> 
+    <main>
+      {% block content %}   
+        <div class="container py-5">  
+          {% for post in posts %} 
+            <article> 
+              <ul> 
+                <li> 
+                  Автор: {{ post.author.get_full_name }} 
+                </li> 
+                <li> 
+                  Дата публикации: {{ post.pub_date|date:"d M Y" }} 
+                </li> 
+              </ul>  
+              <p> 
+                {{ post.text }} 
+              </p> 
+                {% if post.group %}    
+                <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a> 
+                {% endif %}  
+                {% if forloop.last != True %} 
+                <hr> 
+                {% endif %} 
+             </article> 
+        {% endfor %} 
+      </div>   
+      {% endblock %} 
+    </main>   
+  </body> 
